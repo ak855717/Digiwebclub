@@ -6,8 +6,11 @@ import { Play, ArrowRight, Phone, Palette, Lightbulb } from 'lucide-react'
 import TestimonialSlider from '@/components/TestimonialSlider';
 import FAQ from '@/components/FAQ';
 import ConnectUs from "@/components/connectUs"
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
 
 const firstSet = [
   { title: "Card A1", desc: "First set - card 1" },
@@ -33,7 +36,7 @@ const logos = [
 
 export default function HomePage() {
 
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const speed = 80; // px per second
@@ -67,6 +70,120 @@ export default function HomePage() {
 
     animationId = requestAnimationFrame(animate);
 
+
+    //Gsap animation 
+
+    // mouse
+
+    var main = document.querySelector('#main')
+    
+
+
+    var tl1 = gsap.timeline();
+
+    tl1.fromTo(
+      '.welcome-web-agency',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.3, ease: 'power2.in' }
+    )
+      .fromTo(
+        '.we-are-digital',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      )
+      .fromTo(
+        '.heros-para',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
+      );
+
+    gsap.fromTo(
+      '.Creative-professional',
+      { opacity: 0, x: 1000 },
+      { opacity: 1, x: 0, duration: 2, ease: 'power2.out' }
+    );
+
+    gsap.fromTo(
+      '.hero-circle-1',
+      { scale: 0 },
+      { scale: 1, duration: 1, ease: 'power2.out' }
+    );
+
+    gsap.fromTo(
+      '.hero-circle-2',
+      { scale: 0 },
+      { scale: 1, duration: 1, ease: 'power2.out' }
+    );
+
+    // About gsap
+
+    gsap.fromTo(
+      '.about-image',
+      { opacity: 0, x: -400 },
+      {
+        opacity: 1, x: 0, duration: 1,
+        scrollTrigger: {
+          trigger: '.about-image',
+          scroller: 'body',
+          start: 'top 50%'
+        }
+      }
+    );
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '.about-mark',
+        scroller: 'body',
+        start: 'top 50%',
+      }
+    })
+      .fromTo('.about-mark',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.2, ease: 'power2.in' }
+      )
+      .fromTo('.about-head',
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      )
+      .fromTo('.about-para',
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }
+      )
+      .fromTo('.about-feature-1',
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.9, ease: 'power2.out' }
+      )
+      .fromTo('.about-feature-2',
+        { opacity: 0, x: 20 },
+        { opacity: 1, x: 0, duration: 1, ease: 'power2.out' }
+      );
+
+    // offer
+
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '.offer-mark',
+        scroller: 'body',
+        start: 'top 80%',
+        markers: true
+      }
+    })
+      .fromTo('.offer-mark',
+        { scale: 0 },
+        { scale: 1, duration: 0.3, ease: 'power2.out' }
+      )
+      .fromTo('.offer-head',
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      )
+
+
+
+
+
+
+
     return () => {
       cancelAnimationFrame(animationId);
       clone.remove();
@@ -75,9 +192,10 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div >
+    <div id='main' >
+      <div id='cursor'></div>
       {/* Hero Section */}
-      <section className="relative min-h-screen pt-8 bg-gradient-to-br from-gray-50 to-[#05ce9b]/10 overflow-hidden">
+      <section className="relative min-h-screen pt-8 md:pt-0 bg-gradient-to-br from-gray-50 to-[#05ce9b]/10 overflow-hidden">
         {/* Background Decorative Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#05ce9b]/10 rounded-full blur-3xl"></div>
@@ -86,7 +204,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center min-h-screen">
             {/* Left Content */}
             <div className="space-y-8 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start space-x-2 text-[#05ce9b] font-medium">
@@ -94,14 +212,14 @@ export default function HomePage() {
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                 </div>
-                <span className="text-xs sm:text-sm uppercase tracking-wider">Welcome Web Agency</span>
+                <span className="text-xs sm:text-sm uppercase tracking-wider welcome-web-agency">Welcome Web Agency</span>
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                 </div>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight we-are-digital">
                 We are Digital
                 <br />
                 <span className="text-gray-800">Creative Web</span>
@@ -109,7 +227,7 @@ export default function HomePage() {
                 <span className="text-gray-700">About</span>
               </h1>
 
-              <p className="text-base sm:text-lg text-gray-600 max-w-md mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 max-w-md mx-auto lg:mx-0 leading-relaxed heros-para">
                 Suspendisse finibus dolor et pharetra porta. Sed quam elit, lacinia vitae mi quis, ullamcorper imperdiet dolor. Turpis nulla, eget pharetra.
               </p>
 
@@ -129,8 +247,8 @@ export default function HomePage() {
             </div>
 
             {/* Right Content - Hero Image */}
-            <div className="relative mt-8 lg:mt-0 flex justify-center">
-              <div className="relative z-10">
+            <div className="relative mt-8 lg:mt-0 flex justify-center ">
+              <div className="relative z-10 Creative-professional">
                 <Image
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=700&fit=crop&crop=face"
                   alt="Creative professional with headphones"
@@ -142,8 +260,8 @@ export default function HomePage() {
               </div>
 
               {/* Decorative green circle */}
-              <div className="absolute -bottom-8 sm:-bottom-12 -right-8 sm:-right-12 w-32 sm:w-64 h-32 sm:h-64 border-8 border-[#05ce9b] rounded-full opacity-80"></div>
-              <div className="absolute top-1/2 -left-4 sm:-left-8 w-12 sm:w-24 h-12 sm:h-24 bg-gradient-to-r from-[#05ce9b] to-[#02ef91] rounded-full opacity-60"></div>
+              <div className="absolute -bottom-8 sm:-bottom-12 -right-8 sm:-right-12 w-32 sm:w-64 h-32 sm:h-64 border-8 border-[#05ce9b] rounded-full opacity-80 hero-circle-1"></div>
+              <div className="absolute top-1/2 -left-4 sm:-left-8 w-12 sm:w-24 h-12 sm:h-24 bg-gradient-to-r from-[#05ce9b] to-[#02ef91] rounded-full opacity-60 hero-circle-2"></div>
             </div>
           </div>
         </div>
@@ -155,7 +273,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
             {/* Left Content - Team Image */}
             <div className="relative flex justify-center">
-              <div className="relative z-10">
+              <div className="relative z-10 about-image">
                 <Image
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=700&fit=crop"
                   alt="Creative team working together"
@@ -171,31 +289,31 @@ export default function HomePage() {
 
             {/* Right Content */}
             <div className="space-y-8 text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start space-x-2 text-[#05ce9b] font-medium">
+              <div className="flex items-center justify-center lg:justify-start space-x-2 text-[#05ce9b] font-medium ">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                 </div>
-                <span className="text-xs sm:text-sm uppercase tracking-wider">About Us</span>
+                <span className="text-xs sm:text-sm uppercase tracking-wide about-mark">About Us</span>
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                   <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                 </div>
               </div>
 
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight about-head">
                 We Provide Best
                 <br />
                 <span className="text-gray-800">Design Solution in City</span>
               </h2>
 
-              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed about-para">
                 In nec libero luctus, aliquet turpis at, vehicula nisl. Cras eget mauris in nisl tempor lobortis. Nunc in nisl sapien. Suspendisse finibus dolor et pharetra porta. Sed quam elit, lacinia vitae mi quis.
               </p>
 
               {/* Features */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-4">
+                <div className="space-y-4 about-feature-1">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#05ce9b]/20 to-[#02ef91]/20 rounded-lg flex items-center justify-center mx-auto md:mx-0">
                     <Palette className="w-6 h-6 text-[#05ce9b]" />
                   </div>
@@ -205,7 +323,7 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-4 about-feature-2">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#05ce9b]/20 to-[#02ef91]/20 rounded-lg flex items-center justify-center mx-auto md:mx-0">
                     <Lightbulb className="w-6 h-6 text-[#05ce9b]" />
                   </div>
@@ -238,12 +356,14 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* what we offer */}
+
       <section className="py-12 sm:py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           {/* WHAT WE OFFER and Main Title */}
           <div className="text-center mb-10 sm:mb-16">
-            <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#05ce9b]/20 to-[#02ef91]/20 text-[#05ce9b] text-xs sm:text-sm font-medium rounded-full mb-4">WHAT WE OFFER</div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6 sm:mb-8">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#05ce9b]/20 to-[#02ef91]/20 text-[#05ce9b] text-xs sm:text-sm font-medium rounded-full mb-4 offer-mark">WHAT WE OFFER</div>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6 sm:mb-8 offer-head">
               Unlock Revenue
               <br />
               Grow for you Business
