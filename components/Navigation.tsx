@@ -1,19 +1,34 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShoppingCart, Search, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
+import { gsap } from "gsap"
 
 export default function Navigation() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  useEffect(() => {
+    if (mobileOpen) {
+      const tl = gsap.timeline();
+      // tl.fromTo('.mobile-navbar',
+      //   { y: 20, opacity: 0 },
+      //   { y: 0, opacity: 1, duration: 0.6 }
+      // );
+      gsap.fromTo('.mobile-navbar2 ul li',
+        { y: 10, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.15 }
+      );
+    }
+  }, [mobileOpen]);
+
   const isActive = (path: string) => pathname === path
 
   return (
     <div className="fixed left-0 right-0 top-0 z-50 bg-white shadow-md">
-      <nav className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 mobile-navbar">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
@@ -21,36 +36,31 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center space-x-8 text-sm font-medium">
+          <ul className="hidden md:flex items-center space-x-8 text-sm font-medium ">
             <li><Link href="/" className="hover:text-[#05ce9b] transition">Home</Link></li>
             <li><Link href="/about" className="hover:text-[#05ce9b] transition">About</Link></li>
             <li><Link href="/blog" className="hover:text-[#05ce9b] transition">Blog</Link></li>
-            <Dropdown label="Shop" items={[{ label: 'Shop – 01', href: '#' }, { label: 'Shop – 02', href: '#' }, { label: 'Shop Details', href: '#' }]} />
-            <Dropdown label="Pages" items={[{ label: 'Page – 01', href: '#' }, { label: 'Page – 02', href: '#' }, { label: 'Page Details', href: '#' }]} />
+            <li><Link href="/service" className="hover:text-[#05ce9b] transition">Service</Link></li>
             <li><Link href="/contact" className="hover:text-[#05ce9b] transition">Contact</Link></li>
           </ul>
 
           {/* Icons */}
           <div className="flex items-center space-x-4">
-            <ShoppingCart className="w-5 h-5 text-gray-700 hover:text-[#05ce9b] cursor-pointer" />
-            <Search className="w-5 h-5 text-gray-700 hover:text-[#05ce9b] cursor-pointer" />
             {/* Mobile menu button */}
             <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {mobileOpen && (
-          <div className="md:hidden mt-4">
-            <ul className="flex flex-col space-y-4 text-base font-medium">
-              <li><Link href="/" className="hover:text-[#05ce9b] transition">Home</Link></li>
-              <li><Link href="/about" className="hover:text-[#05ce9b] transition">About</Link></li>
-              <MobileDropdown label="Blog" items={[{ label: 'Blog – 01 (Default)', href: '#' }, { label: 'Blog – 02', href: '#' }, { label: 'Blog Details', href: '#' }]} />
-              <MobileDropdown label="Shop" items={[{ label: 'Shop – 01', href: '#' }, { label: 'Shop – 02', href: '#' }, { label: 'Shop Details', href: '#' }]} />
-              <MobileDropdown label="Pages" items={[{ label: 'Page – 01', href: '#' }, { label: 'Page – 02', href: '#' }, { label: 'Page Details', href: '#' }]} />
-              <li><Link href="/contact" className="hover:text-[#05ce9b] transition">Contact</Link></li>
+          <div className="md:hidden my-4 mobile-navbar2">
+            <ul className="flex flex-col justify-center text-center space-y-4 font-medium text-lg">
+              <li><Link href="/" ><span onClick={() => setMobileOpen(false)} className="hover:text-[#05ce9b] transition cursor-pointer">Home</span></Link></li>
+              <li><Link href="/about" ><span onClick={() => setMobileOpen(false)} className="hover:text-[#05ce9b] transition cursor-pointer">About</span></Link></li>
+              <li><Link href="/service" ><span onClick={() => setMobileOpen(false)} className="hover:text-[#05ce9b] transition cursor-pointer">Service</span></Link></li>
+              <li><Link href="/contact" ><span onClick={() => setMobileOpen(false)} className="hover:text-[#05ce9b] transition cursor-pointer">Contact</span></Link></li>
             </ul>
           </div>
         )}

@@ -85,7 +85,7 @@ const DigitalProductsSection = () => {
   }, [hasAnimated, services]);
 
   return (
-    <section ref={sectionRef} className="py-20 -skew-y-3 bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 relative overflow-hidden">
+    <section ref={sectionRef} className="py-20 -skew-y-3 bg-gradient-to-r from-[#14473b] to-[#039158] relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute top-20 right-20 w-32 h-32 bg-purple-500 rounded-full opacity-10"></div>
       <div className="absolute bottom-20 left-20 w-48 h-48 bg-blue-500 rounded-full opacity-5"></div>

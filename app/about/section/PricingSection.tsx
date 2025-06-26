@@ -15,7 +15,7 @@ const PricingSection = () => {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="text-purple-600 text-sm font-semibold mb-2 tracking-wider uppercase">
+          <div className="text-[#05ce9b] text-sm font-semibold mb-2 tracking-wider uppercase">
             WEB DESIGN & DEVELOPMENT
           </div>
           
@@ -30,8 +30,8 @@ const PricingSection = () => {
                 key={index}
                 className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                   index === 1 
-                    ? 'bg-purple-600 text-white shadow-lg' 
-                    : 'text-gray-600 hover:text-purple-600'
+                    ? 'bg-gradient-to-r from-[#14473b] to-[#039158] text-white shadow-lg' 
+                    : 'text-gray-600 hover:text-[#05ce9b] '
                 }`}
               >
                 {plan}
@@ -42,7 +42,7 @@ const PricingSection = () => {
         
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
-            <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-8 text-white relative overflow-hidden">
+            <div className="bg-gradient-to-r from-[#14473b] to-[#03a564] rounded-2xl p-8 text-white relative overflow-hidden">
               <div className="absolute top-4 right-4">
                 <Star className="w-6 h-6 text-yellow-400 fill-current" />
               </div>
@@ -55,7 +55,7 @@ const PricingSection = () => {
               
               <div className="mb-4">
                 <div className="text-3xl font-bold mb-2">$16.00</div>
-                <div className="text-purple-200 text-sm">Monthly</div>
+                <div className="text-[#30ffcb] text-sm">Monthly</div>
               </div>
               
               <h3 className="text-xl font-bold mb-4">Strategy & Planning</h3>
@@ -68,15 +68,15 @@ const PricingSection = () => {
           <div className="space-y-6">
             {features.map((feature, index) => (
               <div key={index} className="flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-50 transition-colors duration-300">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Check className="w-4 h-4 text-purple-600" />
+                <div className="w-8 h-8 bg-[#05ce9c33] rounded-full flex items-center justify-center">
+                  <Check className="w-4 h-4 text-[#05ce9b]" />
                 </div>
                 <span className="text-gray-700 font-medium">{feature}</span>
               </div>
             ))}
             
             <div className="pt-6">
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              <button className="bg-gradient-to-r from-[#14473b] to-[#039158]  hover:bg-[#05ce9b]  text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                 READ MORE
               </button>
             </div>

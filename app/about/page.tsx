@@ -4,6 +4,7 @@ import InnovationSection from './section/InnovationSection';
 import DigitalProductsSection from './section/DigitalProductsSection';
 import MissionSection from './section/MissionSection';
 import PricingSection from './section/PricingSection';
+import AffordablePricing from './section/AffordablePricing';
 
 
 export default function AgencyPage() {
@@ -16,6 +17,7 @@ export default function AgencyPage() {
         <DigitalProductsSection />
         <MissionSection />
         <PricingSection />
+        <AffordablePricing />
       </div>
     </div>
   )

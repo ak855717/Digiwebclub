@@ -37,7 +37,7 @@ const InnovationSection = () => {
                 className="rounded-2xl shadow-2xl"
               />
               
-              <div className="absolute -bottom-8 -right-8 bg-[#05ce9b] text-white rounded-2xl p-6 shadow-xl">
+              <div className="absolute -bottom-8 -right-8 bg-gradient-to-r from-[#14473b] to-[#039158]  text-white rounded-2xl p-6 shadow-xl">
                 <div className="text-center">
                   <div className="text-3xl font-bold">32+</div>
                   <div className="text-sm opacity-90">Years Experience</div>
@@ -78,7 +78,7 @@ const InnovationSection = () => {
               ))}
             </div>
             
-            <button className="bg-[#05ce9b] hover:bg-[#098e6b] text-white px-8 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            <button className="bg-gradient-to-r from-[#14473b] to-[#039158] hover:bg-[#098e6b] text-white px-8 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
               READ MORE
             </button>
           </div>

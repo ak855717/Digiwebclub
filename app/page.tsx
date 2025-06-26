@@ -6,7 +6,7 @@ import { Play, ArrowRight, Phone, Palette, Lightbulb } from 'lucide-react'
 import TestimonialSlider from '@/components/TestimonialSlider';
 import FAQ from '@/components/FAQ';
 import ConnectUs from "@/components/connectUs"
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -166,7 +166,6 @@ export default function HomePage() {
         trigger: '.offer-mark',
         scroller: 'body',
         start: 'top 80%',
-        markers: true
       }
     })
       .fromTo('.offer-mark',

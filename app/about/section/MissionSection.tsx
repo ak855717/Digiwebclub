@@ -7,7 +7,7 @@ const MissionSection = () => {
   ];
 
   return (
-    <section className="py-20 -skew-y-3 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative overflow-hidden">
+    <section className="py-20 -skew-y-3 bg-gradient-to-r from-[#14473b] to-[#039158] relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute top-10 left-10 w-40 h-40 bg-blue-500 rounded-full opacity-5"></div>
       <div className="absolute bottom-10 right-10 w-32 h-32 bg-purple-500 rounded-full opacity-10"></div>
@@ -40,7 +40,7 @@ const MissionSection = () => {
           </div>
           
           <div>
-            <div className="text-purple-400 text-sm font-semibold mb-2 tracking-wider uppercase">
+            <div className="text-[#05ce9b] text-sm font-semibold mb-2 tracking-wider uppercase">
               OUR MISSION CLIENTS
             </div>
             
@@ -56,7 +56,7 @@ const MissionSection = () => {
             <div className="space-y-4">
               {achievements.map((achievement, index) => (
                 <div key={index} className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-[#05ce9b] rounded-full"></div>
                   <span className="text-gray-300">{achievement}</span>
                 </div>
               ))}
