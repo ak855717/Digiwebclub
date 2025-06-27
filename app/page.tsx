@@ -143,19 +143,19 @@ export default function HomePage() {
       )
       .fromTo('.about-head',
         { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+        { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
       )
       .fromTo('.about-para',
         { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
       )
       .fromTo('.about-feature-1',
         { opacity: 0, x: -20 },
-        { opacity: 1, x: 0, duration: 0.9, ease: 'power2.out' }
+        { opacity: 1, x: 0, duration: 0.7, ease: 'power2.out' }
       )
       .fromTo('.about-feature-2',
         { opacity: 0, x: 20 },
-        { opacity: 1, x: 0, duration: 1, ease: 'power2.out' }
+        { opacity: 1, x: 0, duration: 0.9, ease: 'power2.out' }
       );
 
     // offer
@@ -177,11 +177,167 @@ export default function HomePage() {
         { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
       )
 
+    // Project section animations
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '.project-section',
+        scroller: 'body',
+        start: 'top 80%',
+      }
+    })
+      .fromTo('.project-badge',
+        { scale: 0, rotation: -180 },
+        { scale: 1, rotation: 0, duration: 0.5, ease: 'back.out(1.7)' }
+      )
+      .fromTo('.project-title',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+      )
+      .fromTo('.left-project-cards .project-card',
+        { opacity: 0, x: -100, scale: 0.8 },
+        { 
+          opacity: 1, 
+          x: 0, 
+          scale: 1, 
+          duration: 0.8, 
+          ease: 'power2.out',
+          stagger: 0.2
+        }
+      )
+      .fromTo('.right-project-cards .project-card',
+        { opacity: 0, x: 100, scale: 0.8 },
+        { 
+          opacity: 1, 
+          x: 0, 
+          scale: 1, 
+          duration: 0.8, 
+          ease: 'power2.out',
+          stagger: 0.2
+        },
+        '-=0.4'
+      );
 
+    // Project card hover animations
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach((card) => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          scale: 1.05,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+        gsap.to(card.querySelector('.project-image-hover'), {
+          opacity: 1,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+        gsap.to(card.querySelector('.project-image-default'), {
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+        
+        // Add floating animation to the card
+        gsap.to(card, {
+          y: -10,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
 
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          scale: 1,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+        gsap.to(card.querySelector('.project-image-hover'), {
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+        gsap.to(card.querySelector('.project-image-default'), {
+          opacity: 1,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+        
+        // Remove floating animation
+        gsap.to(card, {
+          y: 0,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
 
+      // Add click handler for project cards
+      card.addEventListener('click', (event: Event) => {
+        const mouseEvent = event as MouseEvent;
+        // Create a ripple effect
+        const ripple = document.createElement('div');
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(5, 206, 155, 0.3)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s linear';
+        ripple.style.pointerEvents = 'none';
+        
+        (card as HTMLElement).style.position = 'relative';
+        card.appendChild(ripple);
+        
+        // Position ripple at click point
+        const rect = card.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (mouseEvent.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (mouseEvent.clientY - rect.top - size / 2) + 'px';
+        
+        // Remove ripple after animation
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+        
+        // Add a brief scale animation on click
+        gsap.to(card, {
+          scale: 0.95,
+          duration: 0.1,
+          ease: 'power2.out',
+          yoyo: true,
+          repeat: 1
+        });
+      });
+    });
 
-
+    // Add staggered animation for project titles
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '.project-section',
+        scroller: 'body',
+        start: 'top 70%',
+      }
+    })
+      .fromTo('.project-card h3',
+        { opacity: 0, y: 20 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.6, 
+          ease: 'power2.out',
+          stagger: 0.1
+        },
+        '-=0.5'
+      )
+      .fromTo('.project-card p',
+        { opacity: 0, y: 15 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.5, 
+          ease: 'power2.out',
+          stagger: 0.1
+        },
+        '-=0.3'
+      );
 
     return () => {
       cancelAnimationFrame(animationId);
@@ -456,13 +612,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section>
+      <section className="project-section">
 
         <div className='bg-[rgb(0,7,26)]'>
 
 
           <div className='flex flex-col py-10 justify-center items-center'>
-            <div className="flex items-center pb-5 space-x-2 text-[#05ce9b] font-medium">
+            <div className="flex items-center pb-5 space-x-2 text-[#05ce9b] font-medium project-badge">
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
                 <div className="w-2 h-2 bg-[#05ce9b] rotate-45"></div>
@@ -474,7 +630,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <h2 className="text-4xl mb-10 text-center lg:text-5xl font-bold text-white leading-tight">
+            <h2 className="text-4xl mb-10 text-center lg:text-5xl font-bold text-white leading-tight project-title">
               Explore Our Best Recently
               <br />
               <span className="text-white">Completed Projects</span>
@@ -483,107 +639,143 @@ export default function HomePage() {
 
           <div>
             <div className='flex md:flex-row flex-col justify-center gap-20 pb-10 relative mx-auto'>
-              <div className='flex flex-col min-[50%]'>
-                <div className='my-12'>
-                  <div className="relative md:w-[450px] h-[300px] group">
+              <div className='flex flex-col min-[50%] left-project-cards'>
+                <div className='my-12 project-card cursor-pointer transform transition-all duration-300'>
+                  <div className="relative md:w-[450px] h-[300px] group overflow-hidden rounded-xl">
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:opacity-0'
+                      className='project-image-default rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out'
                       src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
                       alt="Default project image"
                     />
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100'
+                      className='project-image-hover rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out'
                       src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
                       alt="Hover project image"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-[#05ce9b] text-white px-4 py-2 rounded-full text-sm font-medium">
+                        View Project
+                      </div>
+                    </div>
                   </div>
-                  <h3 className='text-white text-3xl pt-5'>Mobile Application Design</h3>
-                  <p className='text-gray-200'>Web Design <span className='text-[#05ce9b]'>|</span>Digital Product <span className='text-[#05ce9b]'>|</span> Website </p>
+                  <h3 className='text-white text-3xl pt-5 group-hover:text-[#05ce9b] transition-colors duration-300'>Mobile Application Design</h3>
+                  <p className='text-gray-200 group-hover:text-gray-300 transition-colors duration-300'>Web Design <span className='text-[#05ce9b]'>|</span>Digital Product <span className='text-[#05ce9b]'>|</span> Website </p>
                 </div>
-                <div className='mb-12'>
-                  <div className="relative md:w-[450px] h-[300px] group">
+                <div className='mb-12 project-card cursor-pointer transform transition-all duration-300'>
+                  <div className="relative md:w-[450px] h-[300px] group overflow-hidden rounded-xl">
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:opacity-0'
-                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
+                      className='project-image-default rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out'
+                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
                       alt="Default project image"
                     />
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100'
-                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
+                      className='project-image-hover rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out'
+                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
                       alt="Hover project image"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-[#05ce9b] text-white px-4 py-2 rounded-full text-sm font-medium">
+                        View Project
+                      </div>
+                    </div>
                   </div>
-                  <h3 className='text-white text-3xl pt-5'>Mobile Application Design</h3>
-                  <p className='text-gray-200'>Web Design <span className='text-[#05ce9b]'>|</span>Digital Product <span className='text-[#05ce9b]'>|</span> Website </p>
+                  <h3 className='text-white text-3xl pt-5 group-hover:text-[#05ce9b] transition-colors duration-300'>E-commerce Platform</h3>
+                  <p className='text-gray-200 group-hover:text-gray-300 transition-colors duration-300'>Web Development <span className='text-[#05ce9b]'>|</span>E-commerce <span className='text-[#05ce9b]'>|</span> UI/UX </p>
                 </div>
-                <div className='mb-12'>
-                  <div className="relative md:w-[450px] h-[300px] group">
+                <div className='mb-12 project-card cursor-pointer transform transition-all duration-300'>
+                  <div className="relative md:w-[450px] h-[300px] group overflow-hidden rounded-xl">
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:opacity-0'
+                      className='project-image-default rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out'
                       src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
                       alt="Default project image"
                     />
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100'
+                      className='project-image-hover rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out'
                       src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
                       alt="Hover project image"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-[#05ce9b] text-white px-4 py-2 rounded-full text-sm font-medium">
+                        View Project
+                      </div>
+                    </div>
                   </div>
-                  <h3 className='text-white text-3xl pt-5'>Mobile Application Design</h3>
-                  <p className='text-gray-200'>Web Design <span className='text-[#05ce9b]'>|</span>Digital Product <span className='text-[#05ce9b]'>|</span> Website </p>
+                  <h3 className='text-white text-3xl pt-5 group-hover:text-[#05ce9b] transition-colors duration-300'>Brand Identity Design</h3>
+                  <p className='text-gray-200 group-hover:text-gray-300 transition-colors duration-300'>Branding <span className='text-[#05ce9b]'>|</span>Logo Design <span className='text-[#05ce9b]'>|</span> Marketing </p>
                 </div>
               </div>
 
               {/* section 2 */}
 
-              <div className='flex flex-col min-[50%]'>
-                <div className='my-12'>
-                  <div className="relative md:w-[450px] h-[300px] group">
+              <div className='flex flex-col min-[50%] right-project-cards'>
+                <div className='my-12 project-card cursor-pointer transform transition-all duration-300'>
+                  <div className="relative md:w-[450px] h-[300px] group overflow-hidden rounded-xl">
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:opacity-0'
-                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
+                      className='project-image-default rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out'
+                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
                       alt="Default project image"
                     />
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100'
-                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
+                      className='project-image-hover rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out'
+                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
                       alt="Hover project image"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-[#05ce9b] text-white px-4 py-2 rounded-full text-sm font-medium">
+                        View Project
+                      </div>
+                    </div>
                   </div>
-                  <h3 className='text-white text-3xl pt-5'>Mobile Application Design</h3>
-                  <p className='text-gray-200'>Web Design <span className='text-[#05ce9b]'>|</span>Digital Product <span className='text-[#05ce9b]'>|</span> Website </p>
+                  <h3 className='text-white text-3xl pt-5 group-hover:text-[#05ce9b] transition-colors duration-300'>Corporate Website</h3>
+                  <p className='text-gray-200 group-hover:text-gray-300 transition-colors duration-300'>Web Design <span className='text-[#05ce9b]'>|</span>Corporate <span className='text-[#05ce9b]'>|</span> Responsive </p>
                 </div>
-                <div className='mb-12'>
-                  <div className="relative md:w-[450px] h-[300px] group">
+                <div className='mb-12 project-card cursor-pointer transform transition-all duration-300'>
+                  <div className="relative md:w-[450px] h-[300px] group overflow-hidden rounded-xl">
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:opacity-0'
+                      className='project-image-default rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out'
                       src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
                       alt="Default project image"
                     />
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100'
+                      className='project-image-hover rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out'
                       src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
                       alt="Hover project image"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-[#05ce9b] text-white px-4 py-2 rounded-full text-sm font-medium">
+                        View Project
+                      </div>
+                    </div>
                   </div>
-                  <h3 className='text-white text-3xl pt-5'>Mobile Application Design</h3>
-                  <p className='text-gray-200'>Web Design <span className='text-[#05ce9b]'>|</span>Digital Product <span className='text-[#05ce9b]'>|</span> Website </p>
+                  <h3 className='text-white text-3xl pt-5 group-hover:text-[#05ce9b] transition-colors duration-300'>Mobile App Development</h3>
+                  <p className='text-gray-200 group-hover:text-gray-300 transition-colors duration-300'>Mobile App <span className='text-[#05ce9b]'>|</span>iOS/Android <span className='text-[#05ce9b]'>|</span> Cross-platform </p>
                 </div>
-                <div className='mb-12'>
-                  <div className="relative md:w-[450px] h-[300px] group">
+                <div className='mb-12 project-card cursor-pointer transform transition-all duration-300'>
+                  <div className="relative md:w-[450px] h-[300px] group overflow-hidden rounded-xl">
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:opacity-0'
-                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
+                      className='project-image-default rounded-xl absolute inset-0 md:w-full h-full object-cover transition-all duration-700 ease-in-out'
+                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
                       alt="Default project image"
                     />
                     <img
-                      className='rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100'
-                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-2.png"
+                      className='project-image-hover rounded-xl absolute inset-0 md:w-full h-full object-cover opacity-0 transition-all duration-700 ease-in-out'
+                      src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/09/project-img-3.png"
                       alt="Hover project image"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-[#05ce9b] text-white px-4 py-2 rounded-full text-sm font-medium">
+                        View Project
+                      </div>
+                    </div>
                   </div>
-                  <h3 className='text-white text-3xl pt-5'>Mobile Application Design</h3>
-                  <p className='text-gray-200'>Web Design <span className='text-[#05ce9b]'>|</span>Digital Product <span className='text-[#05ce9b]'>|</span> Website </p>
+                  <h3 className='text-white text-3xl pt-5 group-hover:text-[#05ce9b] transition-colors duration-300'>3D Product Visualization</h3>
+                  <p className='text-gray-200 group-hover:text-gray-300 transition-colors duration-300'>3D Animation <span className='text-[#05ce9b]'>|</span>Product Design <span className='text-[#05ce9b]'>|</span> Visualization </p>
                 </div>
               </div>
             </div>

@@ -1,15 +1,52 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
 import { Check, Star } from 'lucide-react';
 
 const PricingSection = () => {
-  const features = [
-    "Time for lead Research Work",
-    "Businessland Quality Control",
-    "Business Opportunities",
-    "Amazing communication"
-  ];
+  const [selectedPlan, setSelectedPlan] = useState(1); // Default to Young Plans
 
   const plans = ["Starting Plans", "Young Plans", "Unlimited Plans"];
+
+  const pricingData = {
+    0: {
+      price: "$9.99",
+      title: "Starting Plans",
+      description: "Perfect for small businesses getting started with digital presence.",
+      features: [
+        "Basic website design",
+        "5 pages included",
+        "Mobile responsive",
+        "Basic SEO setup"
+      ]
+    },
+    1: {
+      price: "$16.00",
+      title: "Young Plans",
+      description: "Set up your business analytics dashboard to increase your business profit.",
+      features: [
+        "Professional website design",
+        "10 pages included",
+        "Advanced SEO optimization",
+        "Content management system",
+        "Social media integration"
+      ]
+    },
+    2: {
+      price: "$29.99",
+      title: "Unlimited Plans",
+      description: "Complete digital solution for growing businesses with unlimited possibilities.",
+      features: [
+        "Custom website development",
+        "Unlimited pages",
+        "E-commerce integration",
+        "Advanced analytics",
+        "Priority support",
+        "Custom domain setup"
+      ]
+    }
+  };
+
+  const currentPlan = pricingData[selectedPlan as keyof typeof pricingData];
 
   return (
     <section className="py-20 bg-white">
@@ -28,10 +65,11 @@ const PricingSection = () => {
             {plans.map((plan, index) => (
               <button 
                 key={index}
+                onClick={() => setSelectedPlan(index)}
                 className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                  index === 1 
+                  index === selectedPlan
                     ? 'bg-gradient-to-r from-[#14473b] to-[#039158] text-white shadow-lg' 
-                    : 'text-gray-600 hover:text-[#05ce9b] '
+                    : 'text-gray-600 hover:text-[#05ce9b] hover:bg-gray-100'
                 }`}
               >
                 {plan}
@@ -54,19 +92,19 @@ const PricingSection = () => {
               />
               
               <div className="mb-4">
-                <div className="text-3xl font-bold mb-2">$16.00</div>
+                <div className="text-3xl font-bold mb-2">{currentPlan.price}</div>
                 <div className="text-[#30ffcb] text-sm">Monthly</div>
               </div>
               
-              <h3 className="text-xl font-bold mb-4">Strategy & Planning</h3>
+              <h3 className="text-xl font-bold mb-4">{currentPlan.title}</h3>
               <p className="text-purple-100 text-sm">
-                Set up your business analytics dashboard to increase your business profit.
+                {currentPlan.description}
               </p>
             </div>
           </div>
           
           <div className="space-y-6">
-            {features.map((feature, index) => (
+            {currentPlan.features.map((feature, index) => (
               <div key={index} className="flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-50 transition-colors duration-300">
                 <div className="w-8 h-8 bg-[#05ce9c33] rounded-full flex items-center justify-center">
                   <Check className="w-4 h-4 text-[#05ce9b]" />
@@ -76,8 +114,8 @@ const PricingSection = () => {
             ))}
             
             <div className="pt-6">
-              <button className="bg-gradient-to-r from-[#14473b] to-[#039158]  hover:bg-[#05ce9b]  text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                READ MORE
+              <button className="bg-gradient-to-r from-[#14473b] to-[#039158] hover:from-[#05ce9b] hover:to-[#039158] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                GET STARTED
               </button>
             </div>
           </div>
