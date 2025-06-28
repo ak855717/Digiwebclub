@@ -80,7 +80,7 @@ const offerCards = [
   {
     title: "Mobile App Development",
     description: "Native and cross-platform mobile applications for iOS and Android platforms.",
-    backgroundImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
+    backgroundImage: "https://images.unsplash.com/photo-1512941937669-0a1dd7228f2d?w=800&h=600&fit=crop",
     icon: (
       <svg className="w-16 h-16 mb-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
@@ -333,7 +333,7 @@ export default function HomePage() {
         start: 'top 80%',
       }
     })
-      .fromTo('.prect-badge',
+      .fromTo('.project-badge',
         { scale: 0, rotation: -180 },
         { scale: 1, rotation: 0, duration: 0.5, ease: 'back.out(1.7)' }
       )
