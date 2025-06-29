@@ -1,9 +1,15 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
 import { Check, Star } from 'lucide-react';
 
 const PricingSection = () => {
   const [selectedPlan, setSelectedPlan] = useState(1); // Default to Young Plans
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const plans = ["Starting Plans", "Young Plans", "Unlimited Plans"];
 
@@ -48,8 +54,90 @@ const PricingSection = () => {
 
   const currentPlan = pricingData[selectedPlan as keyof typeof pricingData];
 
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // Initial setup
+    gsap.set([cardRef.current, featuresRef.current], { opacity: 0, y: 50 });
+    gsap.set(buttonRef.current, { opacity: 0, scale: 0.8 });
+
+    // Main animation sequence
+    tl.to(cardRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    })
+    .to(featuresRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    }, '-=0.5')
+    .to(buttonRef.current, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.8,
+      ease: 'back.out(1.7)'
+    }, '-=0.3');
+
+    // Card hover effect
+    gsap.to(cardRef.current, {
+      scale: 1.02,
+      duration: 0.3,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: cardRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        scrub: 1
+      }
+    });
+
+  }, { scope: sectionRef });
+
+  // Animation for plan switching
+  useGSAP(() => {
+    if (cardRef.current && featuresRef.current) {
+      const tl = gsap.timeline();
+      
+      tl.to([cardRef.current, featuresRef.current], {
+        opacity: 0,
+        y: -20,
+        duration: 0.3,
+        ease: 'power2.in'
+      })
+      .to([cardRef.current, featuresRef.current], {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out'
+      }, '+=0.1');
+
+      // Animate features list
+      gsap.fromTo(featuresRef.current?.children || [], 
+        { opacity: 0, x: -20 },
+        { 
+          opacity: 1, 
+          x: 0, 
+          duration: 0.4, 
+          stagger: 0.1,
+          ease: 'power2.out',
+          delay: 0.3
+        }
+      );
+    }
+  }, [selectedPlan]);
+
   return (
-    <section className="py-20 bg-white">
+    <section ref={sectionRef} className="py-20 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <div className="text-[#05ce9b] text-sm font-semibold mb-2 tracking-wider uppercase">
@@ -79,7 +167,7 @@ const PricingSection = () => {
         </div>
         
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="relative">
+          <div ref={cardRef} className="relative">
             <div className="bg-gradient-to-r from-[#14473b] to-[#03a564] rounded-2xl p-8 text-white relative overflow-hidden">
               <div className="absolute top-4 right-4">
                 <Star className="w-6 h-6 text-yellow-400 fill-current" />
@@ -103,7 +191,7 @@ const PricingSection = () => {
             </div>
           </div>
           
-          <div className="space-y-6">
+          <div ref={featuresRef} className="space-y-6">
             {currentPlan.features.map((feature, index) => (
               <div key={index} className="flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-50 transition-colors duration-300">
                 <div className="w-8 h-8 bg-[#05ce9c33] rounded-full flex items-center justify-center">
@@ -114,7 +202,7 @@ const PricingSection = () => {
             ))}
             
             <div className="pt-6">
-              <button className="bg-gradient-to-r from-[#14473b] to-[#039158] hover:from-[#05ce9b] hover:to-[#039158] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              <button ref={buttonRef} className="bg-gradient-to-r from-[#14473b] to-[#039158] hover:from-[#05ce9b] hover:to-[#039158] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                 GET STARTED
               </button>
             </div>

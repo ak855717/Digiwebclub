@@ -1,7 +1,17 @@
-import React from 'react';
+"use client"
+
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
 import { Lightbulb, Palette, Settings, BarChart3 } from 'lucide-react';
 
 const InnovationSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   const services = [
     {
       icon: <Lightbulb className="w-6 h-6" />,
@@ -25,11 +35,83 @@ const InnovationSection = () => {
     }
   ];
 
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // Initial setup
+    gsap.set([imageRef.current, contentRef.current], { opacity: 0, y: 50 });
+    gsap.set('.floating-element', { opacity: 0, scale: 0 });
+
+    // Main animation sequence
+    tl.to(imageRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    })
+    .to(contentRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    }, '-=0.5')
+    .to('.floating-element', {
+      opacity: 1,
+      scale: 1,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'back.out(1.7)'
+    }, '-=0.3')
+    .to(servicesRef.current?.children || [], {
+      opacity: 1,
+      x: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: 'power2.out'
+    }, '-=0.5')
+    .to(buttonRef.current, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.8,
+      ease: 'back.out(1.7)'
+    }, '-=0.3');
+
+    // Floating animation for decorative elements
+    gsap.to('.floating-element', {
+      y: -20,
+      duration: 3,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1
+    });
+
+    // Image hover effect
+    gsap.to(imageRef.current, {
+      scale: 1.05,
+      duration: 0.3,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: imageRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        scrub: 1
+      }
+    });
+
+  }, { scope: sectionRef });
+
   return (
-    <section className="py-20 bg-gray-50">
+    <section ref={sectionRef} className="py-20 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="relative">
+          <div ref={imageRef} className="relative">
             <div className="relative z-10">
               <img 
                 src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -45,12 +127,12 @@ const InnovationSection = () => {
               </div>
             </div>
             
-            <div className="absolute top-8 left-8 w-32 h-32 border-2 border-purple-300 rounded-full opacity-30"></div>
-            <div className="absolute -top-4 -left-4 w-8 h-8 bg-purple-400 rounded-full opacity-40"></div>
-            <div className="absolute top-20 -left-8 w-4 h-4 bg-blue-400 rounded-full opacity-60"></div>
+            <div className="absolute top-8 left-8 w-32 h-32 border-2 border-purple-300 rounded-full opacity-30 floating-element"></div>
+            <div className="absolute -top-4 -left-4 w-8 h-8 bg-purple-400 rounded-full opacity-40 floating-element"></div>
+            <div className="absolute top-20 -left-8 w-4 h-4 bg-blue-400 rounded-full opacity-60 floating-element"></div>
           </div>
           
-          <div>
+          <div ref={contentRef}>
             <div className="text-[#05ce9b] text-sm font-semibold mb-2 tracking-wider uppercase">
               OUR VALUED CLIENTS
             </div>
@@ -65,9 +147,9 @@ const InnovationSection = () => {
               CHARMS OF PLEASURE OF THE MOMENT
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div ref={servicesRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {services.map((service, index) => (
-                <div key={index} className="flex items-start space-x-3">
+                <div key={index} className="flex items-start space-x-3" style={{ opacity: 0, transform: 'translateX(-30px)' }}>
                   <div className={`${service.color} mt-1`}>
                     {service.icon}
                   </div>
@@ -78,7 +160,7 @@ const InnovationSection = () => {
               ))}
             </div>
             
-            <button className="bg-gradient-to-r from-[#14473b] to-[#039158] hover:bg-[#098e6b] text-white px-8 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            <button ref={buttonRef} className="bg-gradient-to-r from-[#14473b] to-[#039158] hover:bg-[#098e6b] text-white px-8 py-3 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl" style={{ opacity: 0, transform: 'scale(0.8)' }}>
               READ MORE
             </button>
           </div>

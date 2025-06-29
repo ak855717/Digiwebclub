@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   description: 'Premier destination for digital creative solutions. We combine creativity with technology to deliver exceptional digital experiences.',
   keywords: 'web design, digital agency, creative solutions, web development',
   authors: [{ name: 'CreativeWeb Agency' }],
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   openGraph: {
     title: 'CreativeWeb - Digital Creative Agency',
     description: 'Premier destination for digital creative solutions.',

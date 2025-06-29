@@ -1,6 +1,8 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
 import { Search, TrendingUp, Award, ArrowUpRight } from 'lucide-react';
 
 const DigitalProductsSection = () => {
@@ -26,8 +28,78 @@ const DigitalProductsSection = () => {
   ];
 
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   const [animatedProgress, setAnimatedProgress] = useState(services.map(() => 0));
   const [hasAnimated, setHasAnimated] = useState(false);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // Initial setup
+    gsap.set([contentRef.current, imageRef.current], { opacity: 0, y: 50 });
+    gsap.set('.bg-element', { opacity: 0, scale: 0 });
+    gsap.set('.service-card', { opacity: 0, x: -50 });
+
+    // Main animation sequence
+    tl.to(contentRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    })
+    .to(imageRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out'
+    }, '-=0.5')
+    .to('.bg-element', {
+      opacity: 1,
+      scale: 1,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: 'back.out(1.7)'
+    }, '-=0.3')
+    .to('.service-card', {
+      opacity: 1,
+      x: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: 'power2.out'
+    }, '-=0.5');
+
+    // Background elements floating animation
+    gsap.to('.bg-element', {
+      y: -30,
+      duration: 4,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1,
+      stagger: 0.5
+    });
+
+    // Service cards hover effect
+    gsap.to('.service-card', {
+      scale: 1.02,
+      duration: 0.3,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.service-card',
+        start: 'top 80%',
+        end: 'bottom 20%',
+        scrub: 1
+      }
+    });
+
+  }, { scope: sectionRef });
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -87,13 +159,13 @@ const DigitalProductsSection = () => {
   return (
     <section ref={sectionRef} className="py-20 -skew-y-3 bg-gradient-to-r from-[#14473b] to-[#039158] relative overflow-hidden">
       {/* Background decorative elements */}
-      <div className="absolute top-20 right-20 w-32 h-32 bg-purple-500 rounded-full opacity-10"></div>
-      <div className="absolute bottom-20 left-20 w-48 h-48 bg-blue-500 rounded-full opacity-5"></div>
-      <div className="absolute top-40 left-1/2 w-24 h-24 bg-cyan-400 rounded-full opacity-10"></div>
+      <div className="absolute top-20 right-20 w-32 h-32 bg-purple-500 rounded-full opacity-10 bg-element"></div>
+      <div className="absolute bottom-20 left-20 w-48 h-48 bg-blue-500 rounded-full opacity-5 bg-element"></div>
+      <div className="absolute top-40 left-1/2 w-24 h-24 bg-cyan-400 rounded-full opacity-10 bg-element"></div>
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
+          <div ref={contentRef}>
             <div className="text-[#05ce9b] text-sm font-semibold mb-2 tracking-wider uppercase">
               WEB DESIGN & DEVELOPMENT
             </div>
@@ -105,7 +177,7 @@ const DigitalProductsSection = () => {
             
             <div className="space-y-8">
               {services.map((service, index) => (
-                <div key={index} className="group">
+                <div key={index} className="group service-card">
                   <div className="flex items-start space-x-4 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:transform hover:scale-105">
                     <div className="text-[#05ce9b] group-hover:text-purple-300 transition-colors">
                       {service.icon}
@@ -129,7 +201,7 @@ const DigitalProductsSection = () => {
             </div>
           </div>
           
-          <div className="relative">
+          <div ref={imageRef} className="relative">
             <img 
               src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=800"
               alt="Developer working"

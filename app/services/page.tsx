@@ -36,6 +36,11 @@ function Service() {
   });
 
   const statsRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const workProcessRef = useRef<HTMLDivElement>(null);
+  const faqRef = useRef<HTMLDivElement>(null);
+  const partnersRef = useRef<HTMLDivElement>(null);
 
   const toggleItem = (id: number) => {
     setOpenItem(openItem === id ? null : id);
@@ -83,6 +88,203 @@ function Service() {
   };
 
   useEffect(() => {
+    // Hero Section Animation
+    if (heroRef.current) {
+      gsap.fromTo(heroRef.current.querySelector('h1'), 
+        { y: 100, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+      );
+      
+      gsap.fromTo(heroRef.current.querySelector('nav'), 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, delay: 0.3, ease: "power3.out" }
+      );
+    }
+
+    // Services Section Animation
+    if (servicesRef.current) {
+      const serviceCards = servicesRef.current.querySelectorAll('.service-card');
+      
+      gsap.fromTo(servicesRef.current.querySelector('.section-header'), 
+        { y: 50, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 0.8, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: servicesRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      serviceCards.forEach((card, index) => {
+        gsap.fromTo(card, 
+          { y: 100, opacity: 0, scale: 0.9 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            scale: 1, 
+            duration: 0.8, 
+            delay: index * 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      });
+    }
+
+    // Work Process Section Animation
+    if (workProcessRef.current) {
+      const leftContent = workProcessRef.current.querySelector('.left-content');
+      const rightContent = workProcessRef.current.querySelector('.right-content');
+      
+      gsap.fromTo(leftContent, 
+        { x: -100, opacity: 0 },
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: workProcessRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      gsap.fromTo(rightContent, 
+        { x: 100, opacity: 0 },
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1, 
+          delay: 0.3,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: workProcessRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+
+    // FAQ Section Animation
+    if (faqRef.current) {
+      const faqLeft = faqRef.current.querySelector('.faq-left');
+      const faqRight = faqRef.current.querySelector('.faq-right');
+      
+      gsap.fromTo(faqLeft, 
+        { x: -100, opacity: 0 },
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: faqRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      gsap.fromTo(faqRight, 
+        { x: 100, opacity: 0 },
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1, 
+          delay: 0.3,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: faqRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+
+    // Partners Section Animation
+    if (partnersRef.current) {
+      const partnerLogos = partnersRef.current.querySelectorAll('img');
+      
+      partnerLogos.forEach((logo, index) => {
+        gsap.fromTo(logo, 
+          { y: 50, opacity: 0, scale: 0.8 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            scale: 1, 
+            duration: 0.6, 
+            delay: index * 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: partnersRef.current,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      });
+    }
+
+    // Statistics Section Animation
+    if (statsRef.current) {
+      const statsLeft = statsRef.current.querySelector('.stats-left');
+      const statsRight = statsRef.current.querySelector('.stats-right');
+      
+      gsap.fromTo(statsLeft, 
+        { x: -100, opacity: 0 },
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      gsap.fromTo(statsRight, 
+        { x: 100, opacity: 0 },
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1, 
+          delay: 0.3,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+
+    // Counter animation observer
     if (statsRef.current) {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -199,9 +401,7 @@ function Service() {
     <div className="min-h-screen bg-white">
 
       {/* Hero Section */}
-
-
-      <section className="relative h-96 bg-cover bg-center bg-no-repeat overflow-hidden">
+      <section ref={heroRef} className="relative h-96 bg-cover bg-center bg-no-repeat overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
@@ -225,9 +425,9 @@ function Service() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-gray-50">
+      <section ref={servicesRef} className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 section-header">
             <div className="flex items-center justify-center mb-4">
               <div className="w-2 h-2 bg-[#05ce9b] rounded-full mr-2"></div>
               <span className="text-[#05ce9b] font-medium uppercase tracking-wide">Welcome Creative Agency</span>
@@ -241,7 +441,7 @@ function Service() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Branding & Art */}
             {cards.map((card, index) => (
-              <div key={index} className="rounded-2xl "
+              <div key={index} className="rounded-2xl service-card"
                 // style={{
                 //   backgroundImage: "url('https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/07/ser1.jpg')",
                 //   backgroundSize: "cover",
@@ -271,10 +471,10 @@ function Service() {
       </section>
 
       {/* Work Process Section */}
-      <section className="py-20 bg-white">
+      <section ref={workProcessRef} className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
+            <div className="left-content">
               <div className="flex items-center mb-4">
                 <div className="w-2 h-2 bg-[#05ce9b] rounded-full mr-2"></div>
                 <span className="text-[#05ce9b] font-medium uppercase tracking-wide">Ideas come to life</span>
@@ -307,7 +507,7 @@ function Service() {
                 className="w-full object-cover rounded-2xl"
               />
             </div>
-            <div className="grid grid-rows-2">
+            <div className="grid grid-rows-2 right-content">
               <div className="space-y-4">
                 <img
                   src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
@@ -333,12 +533,12 @@ function Service() {
       </section>
 
       {/* Diversity Section */}
-      <section className="py-12 text-white" style={{
+      <section ref={faqRef} className="py-12 text-white" style={{
         backgroundImage: 'url(https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/06/faq-bg-1.jpg)',
       }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
+            <div className="faq-left">
               <div className="flex items-center mb-4">
                 <div className="w-2 h-2 bg-[#05ce9b] rounded-full mr-2"></div>
                 <span className="text-[#05ce9b] font-medium uppercase tracking-wide">Working Status</span>
@@ -385,7 +585,7 @@ function Service() {
               </div>
             </div>
 
-            <div className="bg-white text-gray-900 p-8 rounded-2xl relative overflow-hidden">
+            <div className="bg-white text-gray-900 p-8 rounded-2xl relative overflow-hidden faq-right">
               <div
                 className={`transition-all duration-300 ease-in-out ${isAnimating
                   ? slideDirection === 'right'
@@ -451,7 +651,7 @@ function Service() {
       </section>
 
       {/* Partners Section */}
-      <section className="py-16 bg-white">
+      <section ref={partnersRef} className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-center space-x-8 ">
             <img src="https://themexriver.com/wp/haptic-wp/wp-content/uploads/2023/06/6.png" alt="ola" />
@@ -464,10 +664,10 @@ function Service() {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-gray-50" ref={statsRef}>
+      <section ref={statsRef} className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
+            <div className="stats-left">
               <div className="flex items-center mb-4">
                 <div className="w-2 h-2 bg-[#05ce9b] rounded-full mr-2"></div>
                 <span className="text-[#05ce9b] font-medium uppercase tracking-wide">Innovative Status</span>
@@ -482,7 +682,7 @@ function Service() {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 gap-8 stats-right">
               <div className="text-center">
                 <div className="text-6xl font-bold text-gray-900 mb-2">{counts.officeLocation}K</div>
                 <p className="text-gray-600 font-medium">OFFICE LOCATION</p>

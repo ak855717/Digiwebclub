@@ -1,11 +1,16 @@
 import { describe } from 'node:test';
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
 
 const AffordablePricing: React.FC = () => {
     const [hoveredCard, setHoveredCard] = useState<number | null>(null);
     const [selectedCard, setSelectedCard] = useState<number | null>(null);
+    const sectionRef = useRef<HTMLElement>(null);
+    const titleRef = useRef<HTMLDivElement>(null);
+    const cardsRef = useRef<HTMLDivElement>(null);
 
     const cards = [
         {
@@ -31,14 +36,70 @@ const AffordablePricing: React.FC = () => {
         },
     ]
 
+    useGSAP(() => {
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top 80%',
+                end: 'bottom 20%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        // Initial setup
+        gsap.set(titleRef.current, { opacity: 0, y: 30 });
+        gsap.set('.pricing-card', { opacity: 0, y: 50, scale: 0.9 });
+
+        // Main animation sequence
+        tl.to(titleRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power2.out'
+        })
+        .to('.pricing-card', {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'back.out(1.7)'
+        }, '-=0.5');
+
+        // Card hover animations
+        gsap.to('.pricing-card', {
+            scale: 1.02,
+            duration: 0.3,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.pricing-card',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                scrub: 1
+            }
+        });
+
+    }, { scope: sectionRef });
+
+    // Animation for card selection
+    useGSAP(() => {
+        if (selectedCard !== null) {
+            gsap.to(`.pricing-card:nth-child(${selectedCard + 1})`, {
+                scale: 1.05,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        }
+    }, [selectedCard]);
+
     const handleCardClick = (index: number) => {
         setSelectedCard(selectedCard === index ? null : index);
     };
 
     return (
-        <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">
+        <section ref={sectionRef} className="py-8 sm:py-12 lg:py-16 bg-gray-50">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-8 sm:mb-10 lg:mb-12">
+                <div ref={titleRef} className="text-center mb-8 sm:mb-10 lg:mb-12">
                     <h3 className='text-xs sm:text-sm text-[#05ce9b] animate-pulse'>WEB DESIGN & DEVELOPMENT</h3>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 transition-colors duration-300 leading-tight">
                         Affordable pricing. <br className="hidden sm:block" />
@@ -46,11 +107,11 @@ const AffordablePricing: React.FC = () => {
                     </h2>
                 </div>
 
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-4 sm:gap-6 mb-6 max-w-7xl mx-auto'>
+                <div ref={cardsRef} className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-4 sm:gap-6 mb-6 max-w-7xl mx-auto'>
                     {cards.map((card, index) => (
                         <div 
                             key={index} 
-                            className={`flex flex-col items-center mx-auto w-full max-w-[320px] sm:max-w-[300px] cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-2xl rounded-2xl p-4 sm:p-6 ${
+                            className={`pricing-card flex flex-col items-center mx-auto w-full max-w-[320px] sm:max-w-[300px] cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-2xl rounded-2xl p-4 sm:p-6 ${
                                 hoveredCard === index ? 'bg-white shadow-xl' : 'bg-transparent'
                             } ${selectedCard === index ? 'ring-4 ring-[#05ce9b] bg-white' : ''}`}
                             onMouseEnter={() => setHoveredCard(index)}
